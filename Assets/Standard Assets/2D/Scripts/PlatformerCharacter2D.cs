@@ -19,9 +19,11 @@ namespace UnityStandardAssets._2D
         const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
         private Animator m_Anim;            // Reference to the player's animator component.
         private Rigidbody2D m_Rigidbody2D;
-        private static bool m_FacingRight = true;  // For determining which way the player is currently facing.
+        private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
         Transform playerSprite;           //Reference to the graphics to change direction
+
+        public bool getIsFacingRight() {return m_FacingRight;}
 
         private void Awake()
         {
