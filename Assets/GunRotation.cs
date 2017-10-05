@@ -10,6 +10,7 @@ public class GunRotation : MonoBehaviour {
     private GameObject parentGameObject;
     private PlatformerCharacter2D playerScript;
 
+
     private const float RIGHT_MAX_ROT = 50f;
     private const float RIGHT_MIN_ROT = -50f;
 
@@ -21,13 +22,19 @@ public class GunRotation : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         bool isFacingRight = playerScript.getIsFacingRight();
 
         float worldMouseY = Camera.main.ScreenToWorldPoint(Input.mousePosition).y;
+        float worldMouseX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         float currentPosY = transform.position.y;
+        float currentPlayerPosX = parentGameObject.transform.position.x;
         float deltaY = worldMouseY - currentPosY;
+
+        // if((currentPlayerPosX < worldMouseX && !isFacingRight) || (currentPlayerPosX > worldMouseX && isFacingRight)) {
+        //   playerScript.Flip();
+        // }
 
         deltaY *= MOUSE_ROT_CONSTANT;
 
@@ -35,6 +42,7 @@ public class GunRotation : MonoBehaviour {
         if(!isFacingRight) deltaY = deltaY * -1f;
 
         transform.rotation = Quaternion.Euler(0f, 0f, 0f + deltaY);
+
 
     }
 }
