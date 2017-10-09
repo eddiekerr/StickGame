@@ -10,9 +10,10 @@ public class Weapon : MonoBehaviour {
 
     float timeToFire = 0;
     Transform firePoint;
+    private Vector2 gunPosition;
 
     //private GunRotation playerScript;
-    static private UnityStandardAssets._2D.PlatformerCharacter2D playerScript2;
+    private UnityStandardAssets._2D.PlatformerCharacter2D playerScript2;
     private GameObject gunPos;
     private GameObject parentGameObject;
 
@@ -20,7 +21,7 @@ public class Weapon : MonoBehaviour {
 
 
     // Use this for initialization
-    void Awake () {
+    void Start () {
         firePoint = transform.Find("FirePoint");
         if(firePoint == null)
         {
@@ -31,14 +32,13 @@ public class Weapon : MonoBehaviour {
         parentGameObject = transform.parent.gameObject;
         playerScript2 = parentGameObject.GetComponent<UnityStandardAssets._2D.PlatformerCharacter2D>();
 
-
-
     }
 
 	// Update is called once per frame
 	void Update () {
-    Shoot();
-		if(fireRate == 0)
+        gunPos = GameObject.Find("GunCentre");
+        
+        if (fireRate == 0)
         {
             if (Input.GetButtonDown("Fire1"))
             {
@@ -56,26 +56,32 @@ public class Weapon : MonoBehaviour {
 	}
     void Shoot()
     {
-      gunPos = GameObject.Find("GunCentre");
-        Vector2 gunPosition = gunPos.transform.position;
-        bool isFacingRight = playerScript2.getIsFacingRight();
-
-        //Vector2 mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        gunPosition = gunPos.transform.position;
+        
         Vector2 firePointPosition = new Vector2(firePoint.position.x, firePoint.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(firePointPosition, gunPosition + firePointPosition, 100, whatToHit);
-        //Effect();
+        RaycastHit2D hit = Physics2D.Raycast(gunPosition, firePointPosition - gunPosition, 100, whatToHit);
+        Effect();
 
-
-        Debug.DrawLine(firePointPosition, (gunPosition - firePointPosition) * 100, Color.cyan);
-        // if (hit.collider != null)
-        // {
+         if (hit.collider != null)
+         {
             Debug.DrawLine(firePointPosition, hit.point, Color.red);
+            
             Debug.Log("We hit " + hit.collider.name + " and did " + damage + "damage");
-        // }
+         }
     }
     void Effect()
     {
-        Instantiate(BulletTrailPrefab, (firePoint.position), firePoint.rotation);
+        bool isFacingRight = playerScript2.getIsFacingRight();
+        if (isFacingRight == true)
+        {
+            Instantiate(BulletTrailPrefab, firePoint.position, firePoint.rotation);
+        }
+        else
+        {
+            firePoint.rotation *= Quaternion.Euler(0, 0, 180);
+            Instantiate(BulletTrailPrefab, firePoint.position, firePoint.rotation);
+            firePoint.rotation *= Quaternion.Euler(0, 0, 180);
+        }
     }
 
 }
