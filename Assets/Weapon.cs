@@ -59,8 +59,8 @@ public class Weapon : MonoBehaviour {
         gunPosition = gunPos.transform.position;
         
         Vector2 firePointPosition = new Vector2(firePoint.position.x, firePoint.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(gunPosition, firePointPosition - gunPosition, 100, whatToHit);
-        Effect();
+        RaycastHit2D hit = Physics2D.Raycast(gunPosition, firePointPosition - gunPosition, 100, whatToHit);     //I'm the biggest idiot on the planet. The RayCast needs the origin to be behind the 
+        Effect();                                                                                               //the direction. Fuck me right
 
          if (hit.collider != null)
          {
@@ -78,9 +78,9 @@ public class Weapon : MonoBehaviour {
         }
         else
         {
-            firePoint.rotation *= Quaternion.Euler(0, 0, 180);
-            Instantiate(BulletTrailPrefab, firePoint.position, firePoint.rotation);
-            firePoint.rotation *= Quaternion.Euler(0, 0, 180);
+            firePoint.rotation *= Quaternion.Euler(0, 0, 180);                          //this crazy fucking else statement is to flip the firePoint.rotation 180 degrees when facing left,
+            Instantiate(BulletTrailPrefab, firePoint.position, firePoint.rotation);     // then flip it back 180 degrees after its finished otherwise it stays that way
+            firePoint.rotation *= Quaternion.Euler(0, 0, 180);                          //Took me way too fucking long to figure that out
         }
     }
 
