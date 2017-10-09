@@ -29,15 +29,15 @@ public class Weapon : MonoBehaviour {
 
         //playerScript = GetComponent<GunRotation>();
         parentGameObject = transform.parent.gameObject;
-        playerScript2 = GetComponent<UnityStandardAssets._2D.PlatformerCharacter2D>();
+        playerScript2 = parentGameObject.GetComponent<UnityStandardAssets._2D.PlatformerCharacter2D>();
 
-        gunPos = GameObject.Find("GunCentre");
+
 
     }
-	
+
 	// Update is called once per frame
 	void Update () {
-        //Shoot();
+    Shoot();
 		if(fireRate == 0)
         {
             if (Input.GetButtonDown("Fire1"))
@@ -56,21 +56,22 @@ public class Weapon : MonoBehaviour {
 	}
     void Shoot()
     {
+      gunPos = GameObject.Find("GunCentre");
         Vector2 gunPosition = gunPos.transform.position;
         bool isFacingRight = playerScript2.getIsFacingRight();
 
         //Vector2 mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
         Vector2 firePointPosition = new Vector2(firePoint.position.x, firePoint.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(firePointPosition, gunPosition - firePointPosition, 100, whatToHit);
-        Effect();
-        
+        RaycastHit2D hit = Physics2D.Raycast(firePointPosition, gunPosition + firePointPosition, 100, whatToHit);
+        //Effect();
 
-        //Debug.DrawLine(firePointPosition, (gunPosition - firePointPosition) * 100, Color.cyan);
-        //if (hit.collider != null)
-        //{
-            //Debug.DrawLine(firePointPosition, hit.point, Color.red);
-            //Debug.Log("We hit " + hit.collider.name + " and did " + damage + "damage");
-        //}
+
+        Debug.DrawLine(firePointPosition, (gunPosition - firePointPosition) * 100, Color.cyan);
+        // if (hit.collider != null)
+        // {
+            Debug.DrawLine(firePointPosition, hit.point, Color.red);
+            Debug.Log("We hit " + hit.collider.name + " and did " + damage + "damage");
+        // }
     }
     void Effect()
     {
