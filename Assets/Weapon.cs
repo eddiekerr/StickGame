@@ -54,6 +54,7 @@ public class Weapon : MonoBehaviour {
             }
         }
 	}
+
     void Shoot()
     {
         gunPosition = gunPos.transform.position;
@@ -69,6 +70,7 @@ public class Weapon : MonoBehaviour {
             Debug.Log("We hit " + hit.collider.name + " and did " + damage + "damage");
          }
     }
+
     void Effect()
     {
         bool isFacingRight = playerScript2.getIsFacingRight();
