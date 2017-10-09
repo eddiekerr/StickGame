@@ -22,8 +22,7 @@ public class GunRotation : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         bool isFacingRight = playerScript.getIsFacingRight();
 
         float worldMouseY = Camera.main.ScreenToWorldPoint(Input.mousePosition).y;
@@ -42,7 +41,5 @@ public class GunRotation : MonoBehaviour {
         if(!isFacingRight) deltaY = deltaY * -1f;
 
         transform.rotation = Quaternion.Euler(0f, 0f, 0f + deltaY);
-
-
     }
 }

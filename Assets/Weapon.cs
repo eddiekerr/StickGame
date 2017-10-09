@@ -23,8 +23,7 @@ public class Weapon : MonoBehaviour {
     // Use this for initialization
     void Start () {
         firePoint = transform.Find("FirePoint");
-        if(firePoint == null)
-        {
+        if(firePoint == null) {
             Debug.LogError("No FirePoint found");
         }
 
@@ -38,48 +37,39 @@ public class Weapon : MonoBehaviour {
 	void Update () {
         gunPos = GameObject.Find("GunCentre");
         
-        if (fireRate == 0)
-        {
-            if (Input.GetButtonDown("Fire1"))
-            {
+        if (fireRate == 0) {
+            if (Input.GetButtonDown("Fire1")) {
                 Shoot();
             }
         }
-        else
-        {
-            if(Input.GetButton ("Fire1") && Time.time > timeToFire)
-            {
+        else {
+            if(Input.GetButton ("Fire1") && Time.time > timeToFire) {
                 timeToFire = Time.time + 1 / fireRate;
                 Shoot();
             }
         }
 	}
 
-    void Shoot()
-    {
+    void Shoot() {
         gunPosition = gunPos.transform.position;
         
         Vector2 firePointPosition = new Vector2(firePoint.position.x, firePoint.position.y);
         RaycastHit2D hit = Physics2D.Raycast(gunPosition, firePointPosition - gunPosition, 100, whatToHit);     //I'm the biggest idiot on the planet. The RayCast needs the origin to be behind the 
         Effect();                                                                                               //the direction. Fuck me right
 
-         if (hit.collider != null)
-         {
+         if (hit.collider != null) {
             Debug.DrawLine(firePointPosition, hit.point, Color.red);
             
             Debug.Log("We hit " + hit.collider.name + " and did " + damage + "damage");
          }
     }
 
-    void Effect()
-    {
+    void Effect() {
         bool isFacingRight = playerScript2.getIsFacingRight();
-        if (isFacingRight == true)
-        {
+        if (isFacingRight == true) {
             Instantiate(BulletTrailPrefab, firePoint.position, firePoint.rotation);
         }
-        else
-        {
+        else {
             firePoint.rotation *= Quaternion.Euler(0, 0, 180);                          //this crazy fucking else statement is to flip the firePoint.rotation 180 degrees when facing left,
             Instantiate(BulletTrailPrefab, firePoint.position, firePoint.rotation);     // then flip it back 180 degrees after its finished otherwise it stays that way
             firePoint.rotation *= Quaternion.Euler(0, 0, 180);                          //Took me way too fucking long to figure that out
@@ -87,3 +77,4 @@ public class Weapon : MonoBehaviour {
     }
 
 }
+
